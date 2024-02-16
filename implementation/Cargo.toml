@@ -1,0 +1,13 @@
+[package]
+name = "implementation"
+version = "0.23.0"
+authors = ["Decompals"]
+edition = "2021"
+
+[lib]
+name = "splat_segment"
+crate-type = ["cdylib",'rlib']
+
+[dependencies]
+abi_stable = "0.11.3"
+interface = { version = "0.23.0", path = "../interface" }
