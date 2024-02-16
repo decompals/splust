@@ -1,0 +1,8 @@
+[package]
+name = "splat64_segment"
+version = "0.1.0"
+authors = ["Esdfasdf"]
+edition = "2021"
+
+[dependencies]
+abi_stable = "0.11.3"

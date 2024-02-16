@@ -1,0 +1,15 @@
+[package]
+name = "splust"
+version = "0.23.0"
+edition = "2021"
+license = "MIT"
+
+[dependencies]
+abi_stable = "0.11.3"
+anyhow = "1.0.79"
+crunch64 = "0.3.1"
+libloading = "0.8.1"
+pigment64 = "0.4.3"
+pyo3 = "0.20.2"
+serde = "1.0"
+serde_yaml = "0.9.31"
