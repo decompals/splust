@@ -1,6 +1,6 @@
 use wasmtime_wasi::{
-    p2::{IoView, WasiCtx, WasiView},
     ResourceTable,
+    p2::{IoView, WasiCtx, WasiView},
 };
 
 pub mod yaml;
@@ -20,7 +20,7 @@ impl WasiView for MyState {
 }
 #[cfg(test)]
 mod tests {
-    use wasmtime::component::{bindgen, Component, Linker, ResourceTable};
+    use wasmtime::component::{Component, Linker, ResourceTable, bindgen};
     use wasmtime::{Config, Engine, Store};
     use wasmtime_wasi::p2::WasiCtxBuilder;
 

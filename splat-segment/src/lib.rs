@@ -1,5 +1,5 @@
-use splat_segment_api::bindings::export;
 use splat_segment_api::Segment;
+use splat_segment_api::bindings::export;
 
 struct MySegment;
 

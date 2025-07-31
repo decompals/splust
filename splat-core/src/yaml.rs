@@ -152,7 +152,7 @@ fn parse_number(value: &Value) -> Result<Option<u64>, serde::de::value::Error> {
             }
         }
         s => Err(serde::de::Error::custom(format!(
-            "Invalid address value '{s:?}'."
+            "Invalid numerical value '{s:?}'."
         ))),
     }
 }
@@ -196,7 +196,7 @@ where
                             _ => {
                                 return Err(serde::de::Error::custom(format!(
                                     "Invalid type value {value:?}."
-                                )))
+                                )));
                             }
                         };
                     }
@@ -230,7 +230,7 @@ where
                                 Some(subsegments)
                             }
                             _ => {
-                                return Err(serde::de::Error::custom("Invalid subsegments value."))
+                                return Err(serde::de::Error::custom("Invalid subsegments value."));
                             }
                         };
                     }
@@ -247,7 +247,9 @@ where
                         follows_vram = match value {
                             Value::String(s) => Some(s),
                             _ => {
-                                return Err(serde::de::Error::custom("Invalid follows_vram value."))
+                                return Err(serde::de::Error::custom(
+                                    "Invalid follows_vram value.",
+                                ));
                             }
                         };
                     }
@@ -255,7 +257,7 @@ where
                         vram_symbol = match value {
                             Value::String(s) => Some(s),
                             _ => {
-                                return Err(serde::de::Error::custom("Invalid vram_symbol value."))
+                                return Err(serde::de::Error::custom("Invalid vram_symbol value."));
                             }
                         };
                     }
@@ -270,7 +272,7 @@ where
                             section_order = Some(
                                 value
                                     .as_sequence()
-                                    .unwrap()
+                                    .unwrap() // TODO remove unwrap
                                     .iter()
                                     .map(|v| v.as_str().map(|s| s.to_string()).unwrap()) // TODO remove unwrap
                                     .collect::<Vec<String>>(),
@@ -284,7 +286,7 @@ where
                             _ => {
                                 return Err(serde::de::Error::custom(
                                     "Invalid bss_contains_common value.",
-                                ))
+                                ));
                             }
                         };
                     }
@@ -294,7 +296,7 @@ where
                             _ => {
                                 return Err(serde::de::Error::custom(
                                     "Invalid linker_section value.",
-                                ))
+                                ));
                             }
                         };
                     }
@@ -304,7 +306,7 @@ where
                             _ => {
                                 return Err(serde::de::Error::custom(
                                     "Invalid linker_section_order value.",
-                                ))
+                                ));
                             }
                         };
                     }
@@ -321,7 +323,7 @@ where
                             _ => {
                                 return Err(serde::de::Error::custom(
                                     "Invalid suggestion_rodata_section_start value.",
-                                ))
+                                ));
                             }
                         };
                     }
@@ -334,7 +336,7 @@ where
                             _ => {
                                 return Err(serde::de::Error::custom(
                                     "Invalid symbol_name_format value.",
-                                ))
+                                ));
                             }
                         };
                     }
@@ -344,7 +346,7 @@ where
                             _ => {
                                 return Err(serde::de::Error::custom(
                                     "Invalid symbol_name_format_no_rom value.",
-                                ))
+                                ));
                             }
                         };
                     }
@@ -398,7 +400,7 @@ where
                 _ => {
                     return Err(serde::de::Error::custom(
                         "No value for list segment at index 0.",
-                    ))
+                    ));
                 }
             };
 

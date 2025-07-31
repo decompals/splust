@@ -3,4 +3,4 @@ pub mod bindings {
     generate!({path: "./wit/world.wit", pub_export_macro: true, export_macro_name: "export"  });
 }
 
-pub use crate::bindings::{export, Guest as Segment};
+pub use crate::bindings::{Guest as Segment, export};
