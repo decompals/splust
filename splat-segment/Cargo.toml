@@ -1,0 +1,15 @@
+[package]
+name = "splat-segment"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+crate-type = ["cdylib"]
+
+[package.metadata.component]
+package = "splat:segment"
+
+[package.metadata.component.dependencies]
+
+[dependencies]
+splat-segment-api = { path = "../splat-segment-api" }

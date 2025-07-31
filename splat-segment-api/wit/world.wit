@@ -1,0 +1,5 @@
+package splat:segment;
+
+world segment {
+  export testfunc: func(name: string) -> string;
+}
