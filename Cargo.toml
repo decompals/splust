@@ -1,3 +1,8 @@
 [workspace]
-members = ["splat-core", "splat-cli", "splat-segment", "splat-segment-api"]
+members = [
+    "splat-core",
+    "splat-cli",
+    "splat-segment",
+    "splat-segment-api",
+]
 resolver = "2"

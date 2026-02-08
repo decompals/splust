@@ -1,10 +1,18 @@
+use anyhow::Result;
 use clap::{Parser, Subcommand};
+
+mod scripts;
+
+use scripts::split;
 
 /// A binary splitting tool to assist with decompilation and modding projects
 
 #[derive(Clone, Debug, Subcommand)]
 enum Commands {
-    Split,
+    Split {
+        #[clap(flatten)]
+        args: split::SplitArgs,
+    },
     CreateConfig,
     Capy,
 }
@@ -17,18 +25,21 @@ struct Args {
     command: Commands,
 }
 
-fn main() {
+fn main() -> Result<()> {
     let args = Args::parse();
 
     match args.command {
-        Commands::Split => {
+        Commands::Split { args } => {
             println!("Splitting");
+            args.do_stuff()?;
         }
         Commands::CreateConfig => {
             println!("Creating config");
         }
         Commands::Capy => capybara(),
     }
+
+    Ok(())
 }
 
 fn capybara() {

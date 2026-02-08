@@ -151,6 +151,7 @@ fn parse_number(value: &Value) -> Result<Option<u64>, serde::de::value::Error> {
                 )))
             }
         }
+        Value::Null => Ok(None),
         s => Err(serde::de::Error::custom(format!(
             "Invalid numerical value '{s:?}'."
         ))),

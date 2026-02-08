@@ -10,5 +10,5 @@ serde = { version = "1.0", features = ["derive"] }
 serde_yaml = "0.9.33"
 crunch64 = "0.5.3"
 pigment64 = "0.4.5"
-wasmtime = { version = "35.0.0", features=  ["component-model", "cranelift", "std", "runtime" ] }
+wasmtime = { version = "35.0.0", features = ["component-model", "cranelift", "std", "runtime" ] }
 wasmtime-wasi = "35.0.0"
