@@ -4,6 +4,8 @@ use wasmtime_wasi::{
 };
 
 pub mod yaml;
+
+#[allow(dead_code)]
 struct MyState {
     ctx: WasiCtx,
     table: ResourceTable,

@@ -25,7 +25,7 @@ pub struct SplitArgs {
 impl SplitArgs {
     // TODO: rename
     pub fn do_stuff(&self) -> Result<()> {
-        let splat_yaml = yaml::load_yaml(&self.config)?;
+        let _splat_yaml = yaml::load_yaml(&self.config)?;
 
         Ok(())
     }
