@@ -5,10 +5,12 @@ edition = "2024"
 license = "MIT"
 
 [dependencies]
+splat-segment-api = { path = "../splat-segment-api" }
+
 # crunch64 = "0.6"
 # gfxd-rs = "0.1"
 # pigment64 = "0.6"
-# spimdisasm = { git = "https://github.com/Decompollaborate/spimdisasm.git", branch = "rs" }
+spimdisasm = { git = "https://github.com/Decompollaborate/spimdisasm.git", branch = "rs" }
 
 anyhow = "1"
 serde = { version = "1", features = ["derive"] }

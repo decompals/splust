@@ -34,10 +34,15 @@ pub trait SegmentTrait {
 
     #[must_use]
     fn vram_end(&self) -> Option<u32> {
-        if let Some(vram_start) = self.vram_start() && let Some(size) = self.size() {
-            Some(vram_start.wrapping_add(size))
-        } else {
-            None
-        }
+        let vram_start = self.vram_start()?;
+        let size = self.size()?;
+
+        Some(vram_start.wrapping_add(size))
     }
 }
+
+pub trait SegmentGroup: SegmentTrait {
+    #[must_use]
+    fn overlay_category_name(&self) -> Option<Arc<str>>;
+}
+

@@ -1,7 +1,11 @@
+#![warn(clippy::clippy::clone_on_ref_ptr)]
+
 use wasmtime_wasi::{
     ResourceTable,
     p2::{IoView, WasiCtx, WasiView},
 };
+
+pub mod segtypes;
 
 pub mod yaml;
 
