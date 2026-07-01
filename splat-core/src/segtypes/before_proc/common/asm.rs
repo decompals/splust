@@ -1,7 +1,13 @@
 use std::sync::Arc;
 
 use anyhow::{Context, Result};
-use spimdisasm::{addresses::{Rom, Vram}, metadata::OverlayCategoryName, parent_segment_info::ParentSegmentInfo, rabbitizer::{InstructionFlags, IsaVersion}, sections::before_proc::{ExecutableSection, ExecutableSectionSettings}};
+use spimdisasm::{
+    addresses::{Rom, Vram},
+    metadata::OverlayCategoryName,
+    parent_segment_info::ParentSegmentInfo,
+    rabbitizer::{InstructionFlags, IsaVersion},
+    sections::before_proc::{ExecutableSection, ExecutableSectionSettings},
+};
 
 use splat_segment_api::segment_trait::{SegmentGroup, SegmentTrait};
 
@@ -53,7 +59,17 @@ impl CommonSegAsm {
         args: &(),
         yaml: &(),
     ) -> Result<Self> {
-        Self::new_impl(splat_instance, name.into(), seg_type.into(), raw_bytes, rom, vram_start, most_parent, args, yaml)
+        Self::new_impl(
+            splat_instance,
+            name.into(),
+            seg_type.into(),
+            raw_bytes,
+            rom,
+            vram_start,
+            most_parent,
+            args,
+            yaml,
+        )
     }
 
     fn new_impl(
@@ -68,11 +84,14 @@ impl CommonSegAsm {
         _args: &(),
         _yaml: &(),
     ) -> Result<Self> {
-        let text_settings = ExecutableSectionSettings::new(None, InstructionFlags::new(IsaVersion::MIPS_III));
+        let text_settings =
+            ExecutableSectionSettings::new(None, InstructionFlags::new(IsaVersion::MIPS_III));
         let parent_segment_info = ParentSegmentInfo::new(
             Rom::new(most_parent.rom().context("Missing Rom")?.0),
             Vram::new(most_parent.vram_start().context("Missing Vram")?),
-            most_parent.overlay_category_name().map(OverlayCategoryName::new),
+            most_parent
+                .overlay_category_name()
+                .map(OverlayCategoryName::new),
         );
 
         let spimdisasm_section = splat_instance.spimdisasm_context.create_section_text(
@@ -94,12 +113,22 @@ impl CommonSegAsm {
         })
     }
 
-    pub fn post_process(
-        self,
-        splat_instance: &mut SplatInstance,
-    ) -> Result<CommonSegAsmProcessed> {
-        let Self { name, seg_type, rom, vram_start, spimdisasm_section } = self;
+    pub fn post_process(self, splat_instance: &mut SplatInstance) -> Result<CommonSegAsmProcessed> {
+        let Self {
+            name,
+            seg_type,
+            rom,
+            vram_start,
+            spimdisasm_section,
+        } = self;
 
-        CommonSegAsmProcessed::new(splat_instance, name, seg_type, rom, vram_start, spimdisasm_section)
+        CommonSegAsmProcessed::new(
+            splat_instance,
+            name,
+            seg_type,
+            rom,
+            vram_start,
+            spimdisasm_section,
+        )
     }
 }

@@ -1,7 +1,16 @@
-use std::{fs, io::{BufWriter, Write}, path::PathBuf, sync::Arc};
+use std::{
+    fs,
+    io::{BufWriter, Write},
+    path::PathBuf,
+    sync::Arc,
+};
 
 use anyhow::{Context, Result};
-use spimdisasm::{rabbitizer::InstructionDisplayFlags, sections::{before_proc::ExecutableSection, processed::ExecutableSectionProcessed}, symbols::display::{FunctionDisplaySettings, SymDataDisplaySettings}};
+use spimdisasm::{
+    rabbitizer::InstructionDisplayFlags,
+    sections::{before_proc::ExecutableSection, processed::ExecutableSectionProcessed},
+    symbols::display::{FunctionDisplaySettings, SymDataDisplaySettings},
+};
 
 use splat_segment_api::segment_trait::SegmentTrait;
 
@@ -49,7 +58,10 @@ impl CommonSegAsmProcessed {
         vram_start: u32,
         spimdisasm_section: ExecutableSection,
     ) -> Result<Self> {
-        let spimdisasm_processed = spimdisasm_section.post_process(&mut splat_instance.spimdisasm_context, &mut splat_instance.user_relocs)?;
+        let spimdisasm_processed = spimdisasm_section.post_process(
+            &mut splat_instance.spimdisasm_context,
+            &mut splat_instance.user_relocs,
+        )?;
 
         // TODO: self.dir in the middle
         // options.opts.asm_path / self.dir / f"{self.name}.s"
@@ -66,10 +78,7 @@ impl CommonSegAsmProcessed {
         })
     }
 
-    pub fn split(
-        &self,
-        splat_instance: &SplatInstance,
-    ) -> Result<()> {
+    pub fn split(&self, splat_instance: &SplatInstance) -> Result<()> {
         fs::create_dir_all(self.path.parent().context("unable to get parent dir?")?)?;
 
         let mut writer = BufWriter::new(fs::File::create(&self.path)?);
@@ -79,7 +88,11 @@ impl CommonSegAsmProcessed {
         let func_settings = FunctionDisplaySettings::new(instr_display_flags);
         let data_settings = SymDataDisplaySettings::new();
         for sym in self.spimdisasm_section.symbols() {
-            let sym_display = sym.display(&splat_instance.spimdisasm_context, &func_settings, &data_settings)?;
+            let sym_display = sym.display(
+                &splat_instance.spimdisasm_context,
+                &func_settings,
+                &data_settings,
+            )?;
             write!(writer, "{}\n", sym_display)?;
         }
 

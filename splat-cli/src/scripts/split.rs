@@ -1,7 +1,7 @@
 use anyhow::Result;
 use clap::Args;
-use std::path::PathBuf;
 use splat_core::yaml;
+use std::path::PathBuf;
 
 #[derive(Debug, Clone, Args)]
 pub struct SplitArgs {
@@ -11,7 +11,6 @@ pub struct SplitArgs {
 
     #[arg(long, default_values_t = ["all".to_string()])]
     modes: Vec<String>,
-
     // #[arg(long)]
     // verbose: bool,
     // #[arg(long)]

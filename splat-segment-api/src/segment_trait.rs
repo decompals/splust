@@ -16,7 +16,6 @@ pub trait SegmentTrait {
     #[must_use]
     fn bss_size(&self) -> Option<u32>;
 
-
     #[must_use]
     fn rom_size(&self) -> Option<u32> {
         self.rom().map(|(start, end)| end.wrapping_sub(start))
@@ -45,4 +44,3 @@ pub trait SegmentGroup: SegmentTrait {
     #[must_use]
     fn overlay_category_name(&self) -> Option<Arc<str>>;
 }
-

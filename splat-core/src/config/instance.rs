@@ -1,6 +1,8 @@
 use std::collections::BTreeMap;
 
-use spimdisasm::{addresses::Rom, context::Context as SpimdisasmContext, relocation::RelocationInfo};
+use spimdisasm::{
+    addresses::Rom, context::Context as SpimdisasmContext, relocation::RelocationInfo,
+};
 
 use super::options::SplatOpts;
 
