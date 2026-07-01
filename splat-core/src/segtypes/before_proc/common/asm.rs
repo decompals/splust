@@ -1,10 +1,11 @@
 use std::sync::Arc;
 
 use anyhow::{Context, Result};
+use spimdisasm::{addresses::{Rom, Vram}, metadata::OverlayCategoryName, parent_segment_info::ParentSegmentInfo, rabbitizer::{InstructionFlags, IsaVersion}, sections::before_proc::{ExecutableSection, ExecutableSectionSettings}};
 
 use splat_segment_api::segment_trait::{SegmentGroup, SegmentTrait};
 
-use spimdisasm::{addresses::{Rom, Vram}, context::Context as SpimdisasmContext, metadata::OverlayCategoryName, parent_segment_info::ParentSegmentInfo, rabbitizer::{InstructionFlags, IsaVersion}, sections::before_proc::{ExecutableSection, ExecutableSectionSettings}};
+use crate::{config::instance::SplatInstance, segtypes::processed::common::CommonSegAsmProcessed};
 
 #[derive(Debug, Clone, PartialEq, PartialOrd, Hash)]
 pub struct CommonSegAsm {
@@ -41,7 +42,7 @@ impl SegmentTrait for CommonSegAsm {
 // TODO: proper error type
 impl CommonSegAsm {
     pub fn new(
-        context: &mut SpimdisasmContext,
+        splat_instance: &mut SplatInstance,
         name: impl Into<Arc<str>>,
         seg_type: impl Into<Arc<str>>,
         raw_bytes: &[u8],
@@ -52,11 +53,11 @@ impl CommonSegAsm {
         args: &(),
         yaml: &(),
     ) -> Result<Self> {
-        Self::new_impl(context, name.into(), seg_type.into(), raw_bytes, rom, vram_start, most_parent, args, yaml)
+        Self::new_impl(splat_instance, name.into(), seg_type.into(), raw_bytes, rom, vram_start, most_parent, args, yaml)
     }
 
     fn new_impl(
-        context: &mut SpimdisasmContext,
+        splat_instance: &mut SplatInstance,
         name: Arc<str>,
         seg_type: Arc<str>,
         raw_bytes: &[u8],
@@ -74,7 +75,7 @@ impl CommonSegAsm {
             most_parent.overlay_category_name().map(OverlayCategoryName::new),
         );
 
-        let spimdisasm_section = context.create_section_text(
+        let spimdisasm_section = splat_instance.spimdisasm_context.create_section_text(
             &text_settings,
             Arc::clone(&name),
             raw_bytes.into(),
@@ -91,5 +92,14 @@ impl CommonSegAsm {
 
             spimdisasm_section,
         })
+    }
+
+    pub fn post_process(
+        self,
+        splat_instance: &mut SplatInstance,
+    ) -> Result<CommonSegAsmProcessed> {
+        let Self { name, seg_type, rom, vram_start, spimdisasm_section } = self;
+
+        CommonSegAsmProcessed::new(splat_instance, name, seg_type, rom, vram_start, spimdisasm_section)
     }
 }

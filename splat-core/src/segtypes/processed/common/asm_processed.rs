@@ -1,13 +1,21 @@
-use std::sync::Arc;
+use std::{fs, io::{BufWriter, Write}, path::PathBuf, sync::Arc};
+
+use anyhow::{Context, Result};
+use spimdisasm::{rabbitizer::InstructionDisplayFlags, sections::{before_proc::ExecutableSection, processed::ExecutableSectionProcessed}, symbols::display::{FunctionDisplaySettings, SymDataDisplaySettings}};
 
 use splat_segment_api::segment_trait::SegmentTrait;
 
-#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+use crate::config::instance::SplatInstance;
+
+#[derive(Debug, Clone, PartialEq, PartialOrd, Hash)]
 pub struct CommonSegAsmProcessed {
     name: Arc<str>,
     seg_type: Arc<str>,
     rom: (u32, u32),
     vram_start: u32,
+    path: PathBuf,
+
+    spimdisasm_section: ExecutableSectionProcessed,
 }
 
 impl SegmentTrait for CommonSegAsmProcessed {
@@ -29,5 +37,52 @@ impl SegmentTrait for CommonSegAsmProcessed {
 
     fn bss_size(&self) -> Option<u32> {
         None
+    }
+}
+
+impl CommonSegAsmProcessed {
+    pub(crate) fn new(
+        splat_instance: &mut SplatInstance,
+        name: Arc<str>,
+        seg_type: Arc<str>,
+        rom: (u32, u32),
+        vram_start: u32,
+        spimdisasm_section: ExecutableSection,
+    ) -> Result<Self> {
+        let spimdisasm_processed = spimdisasm_section.post_process(&mut splat_instance.spimdisasm_context, &mut splat_instance.user_relocs)?;
+
+        // TODO: self.dir in the middle
+        // options.opts.asm_path / self.dir / f"{self.name}.s"
+        let path = splat_instance.options.asm_path.join(format!("{}.s", name));
+
+        Ok(Self {
+            name,
+            seg_type,
+            rom,
+            vram_start,
+            path,
+
+            spimdisasm_section: spimdisasm_processed,
+        })
+    }
+
+    pub fn split(
+        &self,
+        splat_instance: &SplatInstance,
+    ) -> Result<()> {
+        fs::create_dir_all(self.path.parent().context("unable to get parent dir?")?)?;
+
+        let mut writer = BufWriter::new(fs::File::create(&self.path)?);
+        // TODO: get_asm_file_header
+
+        let instr_display_flags = InstructionDisplayFlags::new_gnu_as();
+        let func_settings = FunctionDisplaySettings::new(instr_display_flags);
+        let data_settings = SymDataDisplaySettings::new();
+        for sym in self.spimdisasm_section.symbols() {
+            let sym_display = sym.display(&splat_instance.spimdisasm_context, &func_settings, &data_settings)?;
+            write!(writer, "{}\n", sym_display)?;
+        }
+
+        Ok(())
     }
 }

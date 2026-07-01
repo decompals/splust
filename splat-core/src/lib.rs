@@ -5,6 +5,7 @@ use wasmtime_wasi::{
     p2::{IoView, WasiCtx, WasiView},
 };
 
+pub mod config;
 pub mod segtypes;
 
 pub mod yaml;
