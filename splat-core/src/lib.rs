@@ -1,4 +1,4 @@
-#![warn(clippy::clippy::clone_on_ref_ptr)]
+#![warn(clippy::clone_on_ref_ptr)]
 
 use wasmtime_wasi::{
     ResourceTable,

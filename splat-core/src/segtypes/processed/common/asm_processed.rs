@@ -60,7 +60,7 @@ impl CommonSegAsmProcessed {
     ) -> Result<Self> {
         let spimdisasm_processed = spimdisasm_section.post_process(
             &mut splat_instance.spimdisasm_context,
-            &mut splat_instance.user_relocs,
+            &splat_instance.user_relocs,
         )?;
 
         // TODO: self.dir in the middle
