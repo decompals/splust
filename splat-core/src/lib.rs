@@ -6,7 +6,7 @@ use wasmtime_wasi::{
 };
 
 pub mod config;
-pub mod segtypes;
+pub mod sections;
 
 pub mod yaml;
 

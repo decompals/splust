@@ -11,7 +11,7 @@ use spimdisasm::{
 
 use splat_segment_api::segment_trait::{SegmentGroup, SegmentTrait};
 
-use crate::{config::instance::SplatInstance, segtypes::processed::common::CommonSegAsmProcessed};
+use crate::{config::instance::SplatInstance, sections::processed::common::CommonSegAsmProcessed};
 
 #[derive(Debug, Clone, PartialEq, PartialOrd, Hash)]
 pub struct CommonSegAsm {
@@ -45,7 +45,6 @@ impl SegmentTrait for CommonSegAsm {
     }
 }
 
-// TODO: proper error type
 impl CommonSegAsm {
     pub fn new(
         splat_instance: &mut SplatInstance,
