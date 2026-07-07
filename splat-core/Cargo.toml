@@ -7,6 +7,7 @@ license = "MIT"
 [dependencies]
 splat-segment-api = { path = "../splat-segment-api" }
 
+address_space = { version = "0.2", features = ["try_from", "error"] }
 # crunch64 = "0.6"
 # gfxd-rs = "0.1"
 # pigment64 = "0.6"

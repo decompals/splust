@@ -1,8 +1,10 @@
 use std::sync::Arc;
 
+use address_space::{Rom, Vram};
 use anyhow::{Context, Result};
 use spimdisasm::{
-    addresses::{Rom, Vram}, metadata::OverlayCategoryName, parent_segment_info::ParentSegmentInfo, sections::before_proc::{DataSection, DataSectionSettings},
+    sections::before_proc::{DataSection, DataSectionSettings},
+    segments::{OverlayCategoryName, ParentSegmentInfo},
 };
 
 use splat_segment_api::segment_trait::{SegmentGroup, SegmentTrait};
@@ -80,8 +82,7 @@ impl CommonSegData {
         _yaml: &(),
     ) -> Result<Self> {
         // TODO: tweak settings
-        let section_settings =
-            DataSectionSettings::new(None);
+        let section_settings = DataSectionSettings::new(None);
         let parent_segment_info = ParentSegmentInfo::new(
             Rom::new(most_parent.rom().context("Missing Rom")?.0),
             Vram::new(most_parent.vram_start().context("Missing Vram")?),
@@ -109,7 +110,10 @@ impl CommonSegData {
         })
     }
 
-    pub fn post_process(self, splat_instance: &mut SplatInstance) -> Result<CommonSegDataProcessed> {
+    pub fn post_process(
+        self,
+        splat_instance: &mut SplatInstance,
+    ) -> Result<CommonSegDataProcessed> {
         let Self {
             name,
             seg_type,

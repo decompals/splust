@@ -3,6 +3,15 @@
 version = 4
 
 [[package]]
+name = "addended_ordered_map"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ab8d04e25ad526e227ccc0e7666da79cf07d9d5d56941d7584adf50ee4f4b7b1"
+dependencies = [
+ "polonius-the-crab",
+]
+
+[[package]]
 name = "addr2line"
 version = "0.24.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -10,6 +19,12 @@ checksum = "dfbe277e56a376000877090da837660b4427aad530e3028d44e0bffe4f89a1c1"
 dependencies = [
  "gimli",
 ]
+
+[[package]]
+name = "address_space"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a636fa14876e21c4162d323c7545c3ef2d9a78a253098bebee720c024d6c027a"
 
 [[package]]
 name = "adler2"
@@ -1391,10 +1406,11 @@ checksum = "69cdb34c158ceb288df11e18b4bd39de994f6657d83847bdffdbd7f346754b0f"
 
 [[package]]
 name = "rabbitizer"
-version = "2.0.0-alpha.7"
+version = "2.0.0-alpha.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d2e1f4b7a38a8aa084cf0a9d54921a1546701249f4c2d8b3a3748d34b7415d47"
+checksum = "9f79a2bb675522959249aa5074d7ac6a2aa502d6b1b3c8570f36567eaf36bd6a"
 dependencies = [
+ "address_space",
  "bitflags",
  "ordered-float",
 ]
@@ -1642,8 +1658,10 @@ dependencies = [
 [[package]]
 name = "spimdisasm"
 version = "2.0.0-alpha.2"
-source = "git+https://github.com/Decompollaborate/spimdisasm.git?branch=rs#07e78ac861998ca9a98b89ce1ab80240e78b79da"
+source = "git+https://github.com/Decompollaborate/spimdisasm.git?branch=rs#679c6f07aef94b6d8fcd06db08f9a54455f9ef74"
 dependencies = [
+ "addended_ordered_map",
+ "address_space",
  "bitflags",
  "encoding_rs",
  "polonius-the-crab",
@@ -1663,6 +1681,7 @@ dependencies = [
 name = "splat-core"
 version = "0.50.0"
 dependencies = [
+ "address_space",
  "anyhow",
  "serde",
  "serde_yaml",

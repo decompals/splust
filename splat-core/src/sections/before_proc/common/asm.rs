@@ -1,12 +1,11 @@
 use std::sync::Arc;
 
+use address_space::{Rom, Vram};
 use anyhow::{Context, Result};
 use spimdisasm::{
-    addresses::{Rom, Vram},
-    metadata::OverlayCategoryName,
-    parent_segment_info::ParentSegmentInfo,
     rabbitizer::{InstructionFlags, IsaVersion},
     sections::before_proc::{ExecutableSection, ExecutableSectionSettings},
+    segments::{OverlayCategoryName, ParentSegmentInfo},
 };
 
 use splat_segment_api::segment_trait::{SegmentGroup, SegmentTrait};

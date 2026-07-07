@@ -7,7 +7,8 @@ use std::{
 
 use anyhow::{Context, Result};
 use spimdisasm::{
-    sections::{before_proc::DataSection, processed::DataSectionProcessed}, symbols::display::SymDataDisplaySettings,
+    sections::{before_proc::DataSection, processed::DataSectionProcessed},
+    symbols::display::SymDataDisplaySettings,
 };
 
 use splat_segment_api::segment_trait::SegmentTrait;
@@ -85,10 +86,7 @@ impl CommonSegDataProcessed {
         let data_settings = SymDataDisplaySettings::new();
 
         for sym in self.spimdisasm_section.data_symbols() {
-            let sym_display = sym.display(
-                &splat_instance.spimdisasm_context,
-                &data_settings,
-            )?;
+            let sym_display = sym.display(&splat_instance.spimdisasm_context, &data_settings)?;
             write!(writer, "{}\n", sym_display)?;
         }
 
