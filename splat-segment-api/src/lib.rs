@@ -1,3 +1,4 @@
+pub mod section_trait;
 pub mod segment_trait;
 
 pub mod bindings {

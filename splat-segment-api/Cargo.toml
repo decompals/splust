@@ -4,4 +4,6 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+address_space = { version = "0.2", features = ["try_from", "error"] }
+
 wit-bindgen = "0.43.0"

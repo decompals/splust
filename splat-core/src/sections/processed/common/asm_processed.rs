@@ -5,6 +5,7 @@ use std::{
     sync::Arc,
 };
 
+use address_space::{AddressRange, Rom, RomVramRange, Vram};
 use anyhow::{Context, Result};
 use spimdisasm::{
     rabbitizer::InstructionDisplayFlags,
@@ -12,40 +13,35 @@ use spimdisasm::{
     symbols::display::{FunctionDisplaySettings, SymDataDisplaySettings},
 };
 
-use splat_segment_api::segment_trait::SegmentTrait;
+use splat_segment_api::section_trait::SectionTrait;
 
 use crate::config::instance::SplatInstance;
 
 #[derive(Debug, Clone, PartialEq, PartialOrd, Hash)]
 pub struct CommonSegAsmProcessed {
     name: Arc<str>,
-    seg_type: Arc<str>,
-    rom: (u32, u32),
-    vram_start: u32,
+    section_type: Arc<str>,
+    address: RomVramRange,
     path: PathBuf,
 
     spimdisasm_section: ExecutableSectionProcessed,
 }
 
-impl SegmentTrait for CommonSegAsmProcessed {
+impl SectionTrait for CommonSegAsmProcessed {
     fn name(&self) -> Arc<str> {
         Arc::clone(&self.name)
     }
 
-    fn seg_type(&self) -> Arc<str> {
-        Arc::clone(&self.seg_type)
+    fn section_type(&self) -> Arc<str> {
+        Arc::clone(&self.section_type)
     }
 
-    fn rom(&self) -> Option<(u32, u32)> {
-        Some(self.rom)
+    fn rom(&self) -> Option<AddressRange<Rom>> {
+        Some(*self.address.rom())
     }
 
-    fn vram_start(&self) -> Option<u32> {
-        Some(self.vram_start)
-    }
-
-    fn bss_size(&self) -> Option<u32> {
-        None
+    fn vram(&self) -> Option<AddressRange<Vram>> {
+        Some(*self.address.vram())
     }
 }
 
@@ -53,9 +49,8 @@ impl CommonSegAsmProcessed {
     pub(crate) fn new(
         splat_instance: &mut SplatInstance,
         name: Arc<str>,
-        seg_type: Arc<str>,
-        rom: (u32, u32),
-        vram_start: u32,
+        section_type: Arc<str>,
+        address: RomVramRange,
         spimdisasm_section: ExecutableSection,
     ) -> Result<Self> {
         let spimdisasm_processed = spimdisasm_section.post_process(
@@ -69,9 +64,8 @@ impl CommonSegAsmProcessed {
 
         Ok(Self {
             name,
-            seg_type,
-            rom,
-            vram_start,
+            section_type,
+            address,
             path,
 
             spimdisasm_section: spimdisasm_processed,
@@ -93,7 +87,7 @@ impl CommonSegAsmProcessed {
                 &func_settings,
                 &data_settings,
             )?;
-            write!(writer, "{}\n", sym_display)?;
+            writeln!(writer, "{}", sym_display)?;
         }
 
         Ok(())

@@ -1702,6 +1702,7 @@ dependencies = [
 name = "splat-segment-api"
 version = "0.1.0"
 dependencies = [
+ "address_space",
  "wit-bindgen",
 ]
 
